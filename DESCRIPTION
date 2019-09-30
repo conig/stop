@@ -1,0 +1,16 @@
+Package: stop
+Title: Friendly Errors and Warnings
+Version: 0.0.0.1
+Authors@R: 
+    person(given = "James",
+           family = "Conigrave",
+           role = c("aut", "cre"),
+           email = "james.conigrave@gmail.com",
+           comment = c(ORCID = "0000-0002-8816-6229"))
+Description: New users often complain that R errors are cryptic. Stop tries to help by providing users with warnings designed for end-users which are more helpful.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    glue
+RoxygenNote: 6.1.1
