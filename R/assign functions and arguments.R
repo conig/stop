@@ -117,5 +117,25 @@ get_functions = function(filename) {
 
 }
 
+#' get_functions
+#'
+#' gets functions from source file without running it.
+#' @param m commit message
+#' @param branch branch name
+#' @export update_git
+
+update_git = function(m = "update", branch = NULL){
+
+  push = "git push"
+
+  if(!is.null(branch)){
+    push = glue::glue("git push -u origin {branch}")
+  }
+
+  command = glue::glue('git add . & git commit -m "{m}" & {push}')
+  message(command)
+  shell(command)
+
+}
 
 
