@@ -12,5 +12,6 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    glue
-RoxygenNote: 7.0.1
+    glue,
+    dplyr
+RoxygenNote: 7.0.2

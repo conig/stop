@@ -91,9 +91,9 @@ find_fn = function(fn, folder = getwd(), open = T) {
 #' get_functions
 #'
 #' gets functions from source file without running it.
-#' @param filename
+#' @param path the filepath you wish to process
 
-get_functions = function(filename) {
+get_functions = function(path) {
   is_function = function (expr) {
     if (!is_assign(expr))
       return(FALSE)
@@ -109,7 +109,7 @@ get_functions = function(filename) {
     is.call(expr) &&
     as.character(expr[[1]]) %in% c('=', '<-', 'assign')
   }
-  file_parsed = parse(filename) #parse file
+  file_parsed = parse(path) #parse file
   functions = Filter(is_function, file_parsed)
   function_names = unlist(Map(function_name, functions))
 
