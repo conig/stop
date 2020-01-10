@@ -14,3 +14,13 @@ dropbox_root = function(){
   normalizePath(files[is_db])
 
 }
+
+#' explore_wd
+#'
+#' explore working directory
+#' @export explore_wd
+
+explore_wd = function(){
+  shell.exec(getwd())
+
+}
