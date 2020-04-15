@@ -5,7 +5,7 @@
 #' @export view_csv
 
 view_csv = function(df){
-  tf = tempfile
+  tf = tempfile()
   location = paste0(tf,".csv")
   utils::write.csv(df,location)
   shell.exec(location)
