@@ -5,11 +5,12 @@
 #' @export view_csv
 
 view_csv = function(df){
-  tf = tempfile()
-  location = paste0(tf,".csv")
+  location = tempfile(fileext = ".csv")
+  df = poorman::rownames_to_column(data.frame(df))
   utils::write.csv(
-    poorman::rownames_to_column(data.frame(df)),
+    df,
     location,
     row.names = FALSE)
+  Sys.sleep(0.1)
   shell.exec(location)
 }
