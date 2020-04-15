@@ -3,17 +3,20 @@
 #' Load all functions from a package into the global environment
 #' @param package name
 #' @param env environment
+#' @param deps a bool. If true, dependencies are also loaded.
 #' @export unpack_fns
 
-unpack_fns = function(package, env = globalenv()){
+unpack_fns = function(package, env = globalenv(), deps = FALSE){
 
   x = as.list(getNamespace(package))
   for(i in seq_along(x)){
-    if(class(x[[i]]) == "function")
+    if("function" %in% class(x[[i]]))
 
     assign(names(x)[i], x[[i]], envir = env)
     assign("%>%", dplyr::`%>%`, envir = env)
   }
+
+  if(deps) load_dependencies(package)
 
 }
 
@@ -134,4 +137,17 @@ update_git = function(m = "update", branch = NULL) {
   shell(command)
 }
 
+#' load_dependencies
+#'
+#' loads all dependencies for a package
+#' @param package a string
+#' @export load_dependencies
 
+load_dependencies = function(package){
+  deps = unlist(tools::package_dependencies(package))
+
+  for(i in seq_along(deps)){
+    require(deps[i], character.only = TRUE)
+  }
+
+}

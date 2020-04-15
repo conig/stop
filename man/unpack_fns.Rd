@@ -4,12 +4,14 @@
 \alias{unpack_fns}
 \title{unpack_fns}
 \usage{
-unpack_fns(package, env = globalenv())
+unpack_fns(package, env = globalenv(), deps = FALSE)
 }
 \arguments{
 \item{package}{name}
 
 \item{env}{environment}
+
+\item{deps}{a bool. If true, dependencies are also loaded.}
 }
 \description{
 Load all functions from a package into the global environment

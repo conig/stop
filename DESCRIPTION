@@ -16,5 +16,6 @@ Imports:
     dplyr,
     utils,
     remotes,
-    tibble
-RoxygenNote: 7.0.2
+    tibble,
+    tools
+RoxygenNote: 7.1.0
