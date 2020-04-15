@@ -1,6 +1,6 @@
 Package: stop
 Title: Friendly Errors and Warnings
-Version: 0.0.0.1
+Version: 0.0.0.2
 Authors@R: 
     person(given = "James",
            family = "Conigrave",
@@ -17,5 +17,6 @@ Imports:
     utils,
     remotes,
     tibble,
-    tools
+    tools,
+    poorman
 RoxygenNote: 7.1.0
