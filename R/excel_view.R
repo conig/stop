@@ -8,7 +8,7 @@ view_csv = function(df){
   tf = tempfile()
   location = paste0(tf,".csv")
   utils::write.csv(
-    poorman::rownames_to_column(df),
+    poorman::rownames_to_column(data.frame(df)),
     location,
     row.names = FALSE)
   shell.exec(location)
