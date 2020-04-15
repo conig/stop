@@ -13,7 +13,7 @@ unpack_fns = function(package, env = globalenv(), deps = FALSE){
     if("function" %in% class(x[[i]]))
 
     assign(names(x)[i], x[[i]], envir = env)
-    assign("%>%", dplyr::`%>%`, envir = env)
+    assign("%>%", poorman::`%>%`, envir = env)
   }
 
   if(deps) load_dependencies(package)
