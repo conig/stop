@@ -7,7 +7,7 @@
 view_csv = function(df){
   location = tempfile(fileext = ".csv")
   df = poorman::rownames_to_column(data.frame(df))
-  utils::write.csv(
+  data.table::fwrite(
     df,
     location,
     row.names = FALSE)

@@ -6,9 +6,9 @@
 
 reset_packages_to_cran = function(){
 
-  pc = utils::installed.packages()
+  pc = data.table::data.table(utils::installed.packages())
 
-  new = tibble::as_tibble(remotes::available_packages())
+  new = data.table::data.table(remotes::available_packages())
   ok = pc[pc$Package %in% new$Package,]
 
   for(i in seq_along(ok$Package)){
