@@ -151,3 +151,14 @@ load_dependencies = function(package){
   }
 
 }
+
+#' clip_fun
+#'
+#' @param fun a function name
+#' @export
+
+clip_fun = function(fun){
+  fun <- paste(as.character(deparse(fun)), collapse = "\n")
+  clipr::write_clip(fun)
+}
+
