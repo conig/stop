@@ -87,7 +87,7 @@ assign_targets = function(fn, env = globalenv()){
 assign_targets.addin <- function() {
   context <- rstudioapi::getActiveDocumentContext()
   requireNamespace("targets")
-  # assign("context", context, envir = globalenv())
+   assign("context", context, envir = globalenv())
 
   if (length(context$selection) == 0) {
     return(
@@ -100,10 +100,20 @@ assign_targets.addin <- function() {
   end <- context$selection[[1]]$range$end
 
   section <- contents[start[1]:end[1]]
-  section[1] <- substr(section[1], start[2], nchar(section[1]))
+  start_trim <- substring(section[1], 1, start[2] - 1)
+  end_trim <-
+    substring(section[length(section)], end[2], nchar(section[length(section)]))
+
+  if (nchar(start_trim) > 0) {
+    section[1] <- gsub(start_trim, "", section[1], fixed = TRUE)
+  }
+
+  if(nchar(end_trim) > 0){
   section[length(section)] <-
-    substr(section[length(section)], 1, end[2])
-  section <- gsub(",", "", section)
+    gsub(end_trim, "", section[length(section)], fixed = TRUE)
+  }
+
+  section <- unlist(strsplit(section, split = ","))
   section <- trimws(section)
 
   cat("loading targets...\n")
