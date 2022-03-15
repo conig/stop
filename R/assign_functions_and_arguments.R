@@ -110,9 +110,9 @@ assign_targets.addin <- function() {
   for (i in seq_along(section)) {
     targets::tar_load(section[i], envir = globalenv())
     if (section[i] %in% ls(envir = globalenv())) {
-      cat(crayon::green(glue::glue("{section[i]} loaded ({i}/{length(section)})"), "\n"))
+      cat(crayon::green(glue::glue("({i}/{length(section)}) {section[i]} loaded"), "\n"))
     } else{
-      cat(crayon::red(glue::glue("{section[i]} failed ({i}/{length(section)})"), "\n"))
+      cat(crayon::red(glue::glue("({i}/{length(section)}) {section[i]} failed"), "\n"))
     }
   }
 }
