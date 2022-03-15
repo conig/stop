@@ -1,0 +1,6 @@
+Name: Assign targets
+Description: Detects highlighted targets and loads them
+Binding: assign_targets.addin
+Interactive: false
+
+

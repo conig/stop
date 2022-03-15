@@ -62,6 +62,62 @@ assign_args = function(fn, env = globalenv()){
 
 }
 
+#' assign_targets
+#'
+#' Load all argument defaults for a function for testing purposes
+#' @param fn function name
+#' @param env environment
+#' @export
+
+assign_targets = function(fn, env = globalenv()){
+
+  args = as.list(args(fn))
+  args = names(args)
+
+  for(i in seq_along(args)){
+   targets::tar_load(args[[i]], envir = env)
+  }
+
+}
+
+#' assign_targets.addin
+#'
+#' assign_targets.addin
+
+assign_targets.addin <- function() {
+  context <- rstudioapi::getActiveDocumentContext()
+  requireNamespace("targets")
+  # assign("context", context, envir = globalenv())
+
+  if (length(context$selection) == 0) {
+    return(
+      rstudioapi::showDialog(title = ":'(", message = "This addin will not work in the visual markdown editor. Please switch to the source editor.")
+    )
+  }
+
+  contents <- context$contents
+  start <- context$selection[[1]]$range$start
+  end <- context$selection[[1]]$range$end
+
+  section <- contents[start[1]:end[1]]
+  section[1] <- substr(section[1], start[2], nchar(section[1]))
+  section[length(section)] <-
+    substr(section[length(section)], 1, end[2])
+  section <- gsub(",", "", section)
+  section <- trimws(section)
+
+  cat("loading targets...\n")
+  for (i in seq_along(section)) {
+    targets::tar_load(section[i], envir = globalenv())
+    if (section[i] %in% ls(envir = globalenv())) {
+      cat(crayon::green(glue::glue("{section[i]} loaded ({i}/{length(section)})"), "\n"))
+    } else{
+      cat(crayon::red(glue::glue("{section[i]} failed ({i}/{length(section)})"), "\n"))
+    }
+  }
+}
+
+
 #'find_fn
 #'
 #'find a function hiding in a folder of R docs
