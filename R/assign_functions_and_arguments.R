@@ -87,7 +87,7 @@ assign_targets = function(fn, env = globalenv()){
 assign_targets.addin <- function() {
   context <- rstudioapi::getActiveDocumentContext()
   requireNamespace("targets")
-   assign("context", context, envir = globalenv())
+   # assign("context", context, envir = globalenv())
 
   if (length(context$selection) == 0) {
     return(
