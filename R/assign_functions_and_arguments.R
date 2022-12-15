@@ -87,6 +87,7 @@ assign_targets = function(fn, env = globalenv()){
 assign_targets.addin <- function() {
   context <- rstudioapi::getActiveDocumentContext()
   requireNamespace("targets")
+  targets::tar_load_globals()
    # assign("context", context, envir = globalenv())
 
   if (length(context$selection) == 0) {
@@ -125,6 +126,64 @@ assign_targets.addin <- function() {
       cat(crayon::red(glue::glue("({i}/{length(section)}) {section[i]} failed"), "\n"))
     }
   }
+}
+
+
+#' evaluate.arguments
+#'
+#' evaluate_arguments.addin
+
+evaluate_arguments.addin <- function() {
+  context <- rstudioapi::getActiveDocumentContext()
+  #assign("context", context, envir = globalenv())
+  if (length(context$selection) == 0) {
+    return(
+      rstudioapi::showDialog(title = ":'(", message = "This addin will not work in the visual markdown editor. Please switch to the source editor.")
+    )
+  }
+
+  contents <- context$contents
+  start <- context$selection[[1]]$range$start
+  end <- context$selection[[1]]$range$end
+
+  section <- contents[start[1]:end[1]]
+  start_trim <- substring(section[1], 1, start[2] - 1)
+  end_trim <-
+    substring(section[length(section)], end[2], nchar(section[length(section)]))
+
+  if (nchar(start_trim) > 0) {
+    section[1] <- gsub(start_trim, "", section[1], fixed = TRUE)
+  }
+
+  if (nchar(end_trim) > 0) {
+    section[length(section)] <-
+      gsub(end_trim, "", section[length(section)], fixed = TRUE)
+  }
+
+  section <- unlist(strsplit(section, split = ","))
+  section <- trimws(section)
+
+  eval_names <- gsub(" \\=.*", "", section)
+
+  cat("evaluating arguments...\n")
+  for (i in seq_along(section)) {
+    eval(parse(text = section[i]), envir = globalenv())
+
+    if (eval_names[i] %in% ls(envir = globalenv())) {
+      cat(crayon::green(
+        glue::glue("({i}/{length(eval_names)}) {eval_names[i]} loaded"),
+        "\n"
+      ))
+    } else{
+      cat(crayon::red(
+        glue::glue("({i}/{length(v)}) {eval_names[i]} failed"),
+        "\n"
+      ))
+
+    }
+
+  }
+
 }
 
 

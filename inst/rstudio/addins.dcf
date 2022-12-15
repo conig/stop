@@ -3,4 +3,8 @@ Description: Detects highlighted targets and loads them
 Binding: assign_targets.addin
 Interactive: false
 
+Name: Evaluate arguments
+Description: Evaluates highlighted arguments
+Binding: evaluate_arguments.addin
+Interactive: false
 
