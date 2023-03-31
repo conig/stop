@@ -48,7 +48,7 @@ peruse_fns = function(package, cat = T){
 #' @param env environment
 #' @export assign_args
 
-assign_args = function(fn, env = globalenv()){
+assign_args = function(fn = rstudioapi::getSourceEditorContext(), env = globalenv()){
 
   args = as.list(args(fn))
   args = args[nchar(names(args)) > 0]
@@ -69,7 +69,7 @@ assign_args = function(fn, env = globalenv()){
 #' @param env environment
 #' @export
 
-assign_targets = function(fn, env = globalenv()){
+assign_targets = function(fn = rstudioapi::getSourceEditorContext(), env = globalenv()){
 
   args = as.list(args(fn))
   args = names(args)

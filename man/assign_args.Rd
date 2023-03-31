@@ -4,7 +4,7 @@
 \alias{assign_args}
 \title{assign_args}
 \usage{
-assign_args(fn, env = globalenv())
+assign_args(fn = rstudioapi::getSourceEditorContext(), env = globalenv())
 }
 \arguments{
 \item{fn}{function name}
