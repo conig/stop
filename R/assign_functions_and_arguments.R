@@ -69,7 +69,7 @@ assign_args = function(fn = rstudioapi::getSourceEditorContext(), env = globalen
 #' @param env environment
 #' @export
 
-assign_targets = function(fn = rstudioapi::getSourceEditorContext(), env = globalenv()){
+assign_targets = function(fn, env = globalenv()){
 
   args = as.list(args(fn))
   args = names(args)
