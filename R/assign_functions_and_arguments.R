@@ -136,6 +136,7 @@ assign_targets.addin <- function() {
 evaluate_arguments.addin <- function() {
   context <- rstudioapi::getActiveDocumentContext()
   #assign("context", context, envir = globalenv())
+
   if (length(context$selection) == 0) {
     return(
       rstudioapi::showDialog(title = ":'(", message = "This addin will not work in the visual markdown editor. Please switch to the source editor.")
@@ -160,7 +161,8 @@ evaluate_arguments.addin <- function() {
       gsub(end_trim, "", section[length(section)], fixed = TRUE)
   }
 
-  section <- unlist(strsplit(section, split = ","))
+  section <- unlist(strsplit(section,
+                             split = ",(?![^()]*\\))", perl = TRUE))
   section <- trimws(section)
 
   eval_names <- gsub(" \\=.*", "", section)
