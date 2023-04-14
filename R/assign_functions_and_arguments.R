@@ -147,41 +147,59 @@ evaluate_arguments.addin <- function() {
   start <- context$selection[[1]]$range$start
   end <- context$selection[[1]]$range$end
 
-  section <- contents[start[1]:end[1]]
-  start_trim <- substring(section[1], 1, start[2] - 1)
-  end_trim <-
-    substring(section[length(section)], end[2], nchar(section[length(section)]))
-
-  if (nchar(start_trim) > 0) {
-    section[1] <- gsub(start_trim, "", section[1], fixed = TRUE)
+  if(!any(grepl("function", contents[start]))){
+    function_start <- which(sapply(contents, function(x) grepl("function", x)))
+    start <- max(function_start[function_start < start[1]])
   }
 
-  if (nchar(end_trim) > 0) {
-    section[length(section)] <-
-      gsub(end_trim, "", section[length(section)], fixed = TRUE)
-  }
+  section <- contents[start[1]:length(contents)]
+  possible_fn_start <- min(which(grepl("\\{",section)))
 
-  section <- unlist(strsplit(section,
-                             split = ",(?![^()]*\\))", perl = TRUE))
-  section <- trimws(section)
+  definition <- paste(paste(section[1:possible_fn_start], collapse = "\n"), "NULL }")
+  func_name <- gsub("\\(.*", "", definition)
+  definition <- gsub(func_name, "temp_func <- function" ,definition)
 
-  eval_names <- gsub(" \\=.*", "", section)
+  eval(parse(text = definition))
+  body(temp_func) <- quote(environment())
+
+  contents <- as.list(temp_func())
+  is_name <- sapply(contents, function(x) is(x,"name"))
+
+  targets_manifest <- tryCatch(targets::tar_manifest()$name, error = function(e) return(NULL))
+
+  to_assign <- contents[!is_name]
+  target_assign <- names(contents[is_name])
+  eval_names <- names(to_assign)
 
   cat("evaluating arguments...\n")
-  for (i in seq_along(section)) {
-    eval(parse(text = section[i]), envir = globalenv())
+  for (i in seq_along(to_assign)) {
+    assign(eval_names[i], to_assign[[i]], envir = globalenv())
 
-    if (eval_names[i] %in% ls(envir = globalenv())) {
+    if (names(to_assign)[i] %in% ls(envir = globalenv())) {
       cat(crayon::green(
         glue::glue("({i}/{length(eval_names)}) {eval_names[i]} loaded"),
         "\n"
       ))
     } else{
       cat(crayon::red(
-        glue::glue("({i}/{length(v)}) {eval_names[i]} failed"),
+        glue::glue("({i}/{length(eval_names)}) {eval_names[i]} failed"),
         "\n"
       ))
 
+    }
+
+  }
+
+  if(length(target_assign) >0 & !is.null(targets_manifest)){
+
+    cat("loading targets...\n")
+    for (i in seq_along(target_assign)) {
+      targets::tar_load(target_assign[i], envir = globalenv())
+      if (target_assign[i] %in% ls(envir = globalenv())) {
+        cat(crayon::green(glue::glue("({i}/{length(target_assign)}) {target_assign[i]} loaded"), "\n"))
+      } else{
+        cat(crayon::red(glue::glue("({i}/{length(target_assign)}) {target_assign[i]} failed"), "\n"))
+      }
     }
 
   }
