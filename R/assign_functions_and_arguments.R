@@ -191,8 +191,10 @@ evaluate_arguments.addin <- function() {
   }
 
   if(length(target_assign) >0 & !is.null(targets_manifest)){
-
+    cat("\n")
     cat("loading targets...\n")
+    targets::tar_load_globals()
+
     for (i in seq_along(target_assign)) {
       targets::tar_load(target_assign[i], envir = globalenv())
       if (target_assign[i] %in% ls(envir = globalenv())) {
