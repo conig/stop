@@ -134,6 +134,7 @@ assign_targets.addin <- function() {
 #' evaluate_arguments.addin
 
 evaluate_arguments.addin <- function() {
+  parent_env <- parent.frame()
   context <- rstudioapi::getActiveDocumentContext()
   #assign("context", context, envir = globalenv())
 
@@ -165,7 +166,10 @@ evaluate_arguments.addin <- function() {
   contents <- as.list(temp_func())
   is_name <- sapply(contents, function(x) is(x,"name"))
 
-  targets_manifest <- tryCatch(targets::tar_manifest()$name, error = function(e) return(NULL))
+  targets_manifest <- tryCatch({
+    targets::tar_load_globals(envir = parent_env)
+    targets::tar_manifest()$name
+    }, error = function(e) return(NULL))
 
   to_assign <- contents[!is_name]
   target_assign <- names(contents[is_name])
@@ -193,7 +197,6 @@ evaluate_arguments.addin <- function() {
   if(length(target_assign) >0 & !is.null(targets_manifest)){
     cat("\n")
     cat("loading targets...\n")
-    targets::tar_load_globals(envir = globalenv())
 
     for (i in seq_along(target_assign)) {
       targets::tar_load(target_assign[i], envir = globalenv())
