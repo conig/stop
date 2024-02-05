@@ -6,6 +6,9 @@
 \usage{
 search_targets(pattern)
 }
+\arguments{
+\item{pattern}{pattern to search for}
+}
 \description{
 Search for target names within a manifest
 }

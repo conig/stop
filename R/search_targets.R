@@ -1,7 +1,7 @@
 #' search_targets
 #'
 #' Search for target names within a manifest
-#' @pattern pattern to search for
+#' @param pattern pattern to search for
 #' @export
 
 search_targets <- function(pattern) {
