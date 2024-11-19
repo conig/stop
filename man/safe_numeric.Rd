@@ -9,7 +9,10 @@ safe_numeric(x, ignore = c())
 \arguments{
 \item{x}{A vector to convert to numeric}
 
-\item{ignore}{A vector of values to ignore when checking for unknown fitted.values#' @return A numeric vector}
+\item{ignore}{A vector of values to ignore when checking for unknown values}
+}
+\value{
+A numeric vector
 }
 \description{
 Convert a vector to numeric, but stop if unknown values could not be converted
