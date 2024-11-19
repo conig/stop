@@ -4,12 +4,14 @@
 \alias{safe_numeric}
 \title{safe_numeric}
 \usage{
-safe_numeric(x, ignore = c())
+safe_numeric(x, ignore = c(), use_ignore = TRUE)
 }
 \arguments{
 \item{x}{A vector to convert to numeric}
 
 \item{ignore}{A vector of values to ignore when checking for unknown values}
+
+\item{use_ignore}{A logical value indicating whether to use the ignore vector}
 }
 \value{
 A numeric vector
